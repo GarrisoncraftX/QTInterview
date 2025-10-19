@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package user;
+
+message User {
+  int32 id = 1;
+  string email = 2;
+  string role = 3;
+  string status = 4;
+  string email_hash = 5;
+  string signature = 6;
+  string created_at = 7;
+}
+
+message UserList {
+  repeated User users = 1;
+}
