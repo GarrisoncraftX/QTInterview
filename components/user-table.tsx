@@ -107,9 +107,9 @@ export function UserTable({ onUserUpdated }: UserTableProps) {
           />
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex flex-col gap-2 sm:flex-row sm:gap-2">
           <Select value={roleFilter} onValueChange={setRoleFilter}>
-            <SelectTrigger className="w-[140px]">
+            <SelectTrigger className="w-full sm:w-[140px]">
               <SelectValue placeholder="Filter by role" />
             </SelectTrigger>
             <SelectContent>
@@ -121,7 +121,7 @@ export function UserTable({ onUserUpdated }: UserTableProps) {
           </Select>
 
           <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="w-[140px]">
+            <SelectTrigger className="w-full sm:w-[140px]">
               <SelectValue placeholder="Filter by status" />
             </SelectTrigger>
             <SelectContent>
@@ -135,17 +135,18 @@ export function UserTable({ onUserUpdated }: UserTableProps) {
       </div>
 
       <div className="rounded-lg border border-border bg-card overflow-hidden">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Email</TableHead>
-              <TableHead>Role</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Verified</TableHead>
-              <TableHead>Created</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="min-w-[200px]">Email</TableHead>
+                <TableHead className="hidden sm:table-cell">Role</TableHead>
+                <TableHead className="hidden md:table-cell">Status</TableHead>
+                <TableHead className="hidden lg:table-cell">Verified</TableHead>
+                <TableHead className="hidden xl:table-cell">Created</TableHead>
+                <TableHead className="text-right min-w-[100px]">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
           <TableBody>
             {currentUsers.length === 0 ? (
               <TableRow>
@@ -175,28 +176,44 @@ export function UserTable({ onUserUpdated }: UserTableProps) {
             ) : (
               currentUsers.map((user) => (
                 <TableRow key={user._id} className="group transition-colors hover:bg-muted/50">
-                  <TableCell className="font-medium">{user.email}</TableCell>
-                  <TableCell>
+                  <TableCell className="font-medium">
+                    <div className="flex flex-col gap-1">
+                      <span>{user.email}</span>
+                      <div className="flex flex-wrap gap-2 sm:hidden">
+                        <Badge variant={getRoleBadgeVariant(user.role)} className="capitalize text-xs">
+                          {user.role}
+                        </Badge>
+                        <Badge variant={getStatusBadgeVariant(user.status)} className="capitalize text-xs">
+                          {user.status}
+                        </Badge>
+                        <div className="flex items-center gap-1 text-accent">
+                          <Shield className="h-3 w-3" />
+                          <span className="text-xs font-medium">Verified</span>
+                        </div>
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell className="hidden sm:table-cell">
                     <Badge variant={getRoleBadgeVariant(user.role)} className="capitalize">
                       {user.role}
                     </Badge>
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="hidden md:table-cell">
                     <Badge variant={getStatusBadgeVariant(user.status)} className="capitalize">
                       {user.status}
                     </Badge>
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="hidden lg:table-cell">
                     <div className="flex items-center gap-1.5 text-accent">
                       <Shield className="h-4 w-4" />
                       <span className="text-sm font-medium">Verified</span>
                     </div>
                   </TableCell>
-                  <TableCell className="text-muted-foreground">
+                  <TableCell className="text-muted-foreground hidden xl:table-cell">
                     {new Date(user.createdAt).toLocaleDateString()}
                   </TableCell>
                   <TableCell className="text-right">
-                    <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity sm:opacity-100">
                       <Button variant="ghost" size="icon" onClick={() => setEditUser(user)} className="h-8 w-8">
                         <Pencil className="h-4 w-4" />
                       </Button>
@@ -214,11 +231,12 @@ export function UserTable({ onUserUpdated }: UserTableProps) {
               ))
             )}
           </TableBody>
-        </Table>
+          </Table>
+        </div>
       </div>
 
       {totalPages > 1 && (
-        <div className="mt-4 flex items-center justify-between">
+        <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-sm text-muted-foreground">
             Showing {indexOfFirstItem + 1} to {Math.min(indexOfLastItem, filteredUsers.length)} of{" "}
             {filteredUsers.length} users
@@ -232,14 +250,14 @@ export function UserTable({ onUserUpdated }: UserTableProps) {
             >
               Previous
             </Button>
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1 overflow-x-auto">
               {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                 <Button
                   key={page}
                   variant={currentPage === page ? "default" : "outline"}
                   size="sm"
                   onClick={() => setCurrentPage(page)}
-                  className="h-8 w-8 p-0"
+                  className="h-8 w-8 p-0 flex-shrink-0"
                 >
                   {page}
                 </Button>

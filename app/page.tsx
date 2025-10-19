@@ -28,7 +28,7 @@ export default function Home() {
             </p>
           </div>
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-4">
+        <div className="flex flex-1 flex-col gap-4 p-4 sm:p-6">
           {currentView === "users" ? <UsersView /> : <AnalyticsView />}
         </div>
       </SidebarInset>

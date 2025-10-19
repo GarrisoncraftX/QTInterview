@@ -127,7 +127,7 @@ export function AnalyticsView() {
 
   return (
     <div className="space-y-6">
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         {statsCards.map((card) => (
           <Card
             key={card.title}
@@ -181,7 +181,7 @@ export function AnalyticsView() {
         </CardContent>
       </Card>
 
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="grid gap-4 sm:gap-6 grid-cols-1 md:grid-cols-2">
         <Card className="transition-all duration-300 hover:shadow-xl hover:shadow-primary/5">
           <CardHeader>
             <CardTitle className="text-xl">Role Distribution</CardTitle>
